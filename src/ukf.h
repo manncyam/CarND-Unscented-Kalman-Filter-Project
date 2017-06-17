@@ -81,6 +81,15 @@ public:
   
   ///*
   MatrixXd Zsig_;
+  
+  ///* H_laser
+  MatrixXd H_laser_;
+  
+  ///* R_laser_
+  MatrixXd R_laser_;
+  
+  ///* R_radar_;
+  MatrixXd R_radar_;
   /**
    * Constructor
    */

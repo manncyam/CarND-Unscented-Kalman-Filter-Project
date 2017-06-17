@@ -66,8 +66,21 @@ public:
 
   ///* Sigma point spreading parameter
   double lambda_;
+  
+  ///*Measurement state dimension
+  int n_z_;
+  
+  ///*Augmented Sigma
+  MatrixXd Xsig_aug_;
 
-
+  ///*
+  VectorXd z_pred_;
+  
+  ///*
+  MatrixXd S_;
+  
+  ///*
+  MatrixXd Zsig_;
   /**
    * Constructor
    */
@@ -102,6 +115,31 @@ public:
    * @param meas_package The measurement at k+1
    */
   void UpdateRadar(MeasurementPackage meas_package);
+  
+  /**
+   * Generate Sigma Points 
+   * @param Xsig_out - sigma points output
+  */
+  void AugmentedSigmaPoints();
+  
+  /**
+   * SigmaPointPrediction Sigma Points 
+   * @param Xsig_out - sigma points output
+  */
+  void SigmaPointPrediction(double delta_t);
+  
+  /**
+    *PredictMeanAndCovariance 
+  */
+  void PredictMeanAndCovariance();
+  
+  /**
+    *PredictRadarMeasurement 
+	*@param z_out, S_out
+  */
+  void PredictRadarMeasurement();
+  
+  void InitWeights();
 };
 
 #endif /* UKF_H */

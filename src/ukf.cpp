@@ -1,6 +1,7 @@
 #include "ukf.h"
 #include "Eigen/Dense"
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 using Eigen::MatrixXd;
@@ -22,11 +23,11 @@ UKF::UKF() {
   
   // initial covariance matrix
   P_ = MatrixXd(5, 5);
-  P_ <<  0.0043,   -0.0013,    0.0030,   -0.0022,   -0.0020,
-          -0.0013,    0.0077,    0.0011,    0.0071,    0.0060,
-           0.0030,    0.0011,    0.0054,    0.0007,    0.0008,
-          -0.0022,    0.0071,    0.0007,    0.0098,    0.0100,
-          -0.0020,    0.0060,    0.0008,    0.0100,    0.0123;
+  P_ <<  0.025, 0, 0, 0, 0,
+             0, 0.025, 0, 0, 0,
+             0, 0, 1, 0, 0,
+             0, 0, 0, 1, 0,
+             0, 0, 0, 0, 1;
   // Process noise standard deviation longitudinal acceleration in m/s^2
   std_a_ = 0.2;
 
@@ -105,12 +106,12 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 	  float rho = meas_package.raw_measurements_[0];
 	  float phi = meas_package.raw_measurements_[1];
 	  float rho_dot = meas_package.raw_measurements_[2];
-	  x_ << rho * cos(phi), rho * sin(phi), 0, 0, 0;
+	  x_ << rho * cos(phi), rho * sin(phi), 5., 1.57, 2.;
     }else{
 	  if(!use_laser_)
         return;		  
       x_ << meas_package.raw_measurements_[0], 
-	            meas_package.raw_measurements_[1], 0, 0, 0;
+	            meas_package.raw_measurements_[1], 5., 1.57, 2.;
     }   
 	
 	is_initialized_ = true;
@@ -174,8 +175,8 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   
   VectorXd z = VectorXd(2);
   z << meas_package.raw_measurements_[0], meas_package.raw_measurements_[1];
-  VectorXd z_pred = H_laser_ *  x_;
-  VectorXd y = z - z_pred;
+  MatrixXd z_pred = H_laser_ *  x_;
+  MatrixXd y = z - z_pred;
   MatrixXd Ht = H_laser_.transpose();
   MatrixXd PHt = P_ * Ht;
   MatrixXd S = H_laser_ * PHt + R_laser_;
@@ -187,6 +188,14 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   long x_size = x_.size();
   MatrixXd I = MatrixXd::Identity(x_size, x_size);
   P_ = (I - K * H_laser_) * P_;  
+  
+  // for calculating NIS value only
+  //MatrixXd z_diff_t = y.transpose();
+  //MatrixXd e = z_diff_t * Si * y;
+  //string filename = "lidar_nis.txt";
+  //ofstream out(filename, ios::out | ios::app);
+  //out << e << std::endl;
+  //out.close();
 }
 
   /**
@@ -276,6 +285,14 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
   
   x_ = x_ + K * z_diff;
   P_ = P_ - K * S_ * K.transpose();
+  
+  // for calculating NIS only
+  //MatrixXd z_diff_t = z_diff.transpose();
+  //MatrixXd e = z_diff_t * S_.inverse() * z_diff;
+  //string filename = "radar_nis.txt";
+  //ofstream out(filename, ios::out | ios::app);
+  //out << e << std::endl;
+  //out.close();
 }
 
 /**

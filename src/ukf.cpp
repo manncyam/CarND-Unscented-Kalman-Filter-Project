@@ -23,13 +23,13 @@ UKF::UKF() {
   
   // initial covariance matrix
   P_ = MatrixXd(5, 5);
-  P_ <<  0.025, 0, 0, 0, 0,
-             0, 0.025, 0, 0, 0,
-             0, 0, 1, 0, 0,
-             0, 0, 0, 1, 0,
-             0, 0, 0, 0, 1;
+  P_ <<  0.0225, 0, 0, 0, 0,
+             0, 0.0225, 0, 0, 0,
+             0, 0, 4, 0, 0,
+             0, 0, 0, 0.09, 0,
+             0, 0, 0, 0, 0.04;
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 0.2;
+  std_a_ = 2.;
 
   // Process noise standard deviation yaw acceleration in rad/s^2
   std_yawdd_ = 0.2;
@@ -106,12 +106,12 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 	  float rho = meas_package.raw_measurements_[0];
 	  float phi = meas_package.raw_measurements_[1];
 	  float rho_dot = meas_package.raw_measurements_[2];
-	  x_ << rho * cos(phi), rho * sin(phi), 5., 1.57, 2.;
+	  x_ << rho * cos(phi), rho * sin(phi), 0, 0, 0;
     }else{
 	  if(!use_laser_)
         return;		  
       x_ << meas_package.raw_measurements_[0], 
-	            meas_package.raw_measurements_[1], 5., 1.57, 2.;
+	            meas_package.raw_measurements_[1], 0, 0, 0;
     }   
 	
 	is_initialized_ = true;

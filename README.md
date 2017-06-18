@@ -24,19 +24,19 @@ P_ = 0.025, 0, 0, 0, 0,
 
 1. Here is the RMSE result for dataset 1
 
-![Dataset1 snapshot](output_image/dataset1_sim.png)
+![Dataset1 snapshot](/output_images/dataset1_sim.png)
 
 2. Here is the RMSE result for dataset 2
 
-![Dataset2 snapshot](output_image/dataset2_sim.png)
+![Dataset2 snapshot](/output_images/dataset2_sim.png)
 
 3. Here is the Lidar NIS result
 
-![Dataset2 Lidar NIS](output_image/lidar_NIS.png)
+![Dataset2 Lidar NIS](/output_images/lidar_NIS.png)
 
 4. Here is the Radar NIS result
 
-![Dataset2 Radar NIS](output_image/radar_NIS.png)
+![Dataset2 Radar NIS](/output_images/radar_NIS.png)
 
 
 ## Other Important Dependencies

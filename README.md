@@ -14,13 +14,13 @@ Passing the project requires obtaining RMSE values that are lower that the toler
 
 # Result
 The values below I chose for both datasets:
-std_a_ = 0.5
-std_yawdd = 0.5
-P_ = 0.025, 0, 0, 0, 0,
-     0, 0.025, 0, 0, 0,
-     0, 0, 1, 0, 0,
-     0, 0, 0, 1, 0,
-     0, 0, 0, 0, 1
+std_a_ = 2.
+std_yawdd = 0.2
+P_ = 0.0225, 0, 0, 0, 0,
+     0, 0.0225, 0, 0, 0,
+     0, 0, 4, 0, 0,
+     0, 0, 0, 0.09, 0,
+     0, 0, 0, 0, 0.04
 
 1. Here is the RMSE result for dataset 1
 
